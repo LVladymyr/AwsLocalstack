@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/volodymyr/Projects/AwsServices/AwsServices/AwsServices.csproj": {}
+  },
+  "projects": {
+    "/home/volodymyr/Projects/AwsServices/AwsServices/AwsServices.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/volodymyr/Projects/AwsServices/AwsServices/AwsServices.csproj",
+        "projectName": "AwsServices",
+        "projectPath": "/home/volodymyr/Projects/AwsServices/AwsServices/AwsServices.csproj",
+        "packagesPath": "/home/volodymyr/.nuget/packages/",
+        "outputPath": "/home/volodymyr/Projects/AwsServices/AwsServices/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/opt/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/volodymyr/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "AWSSDK.DynamoDBv2": {
+              "target": "Package",
+              "version": "[3.3.101.69, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.3.104.33, )"
+            },
+            "AWSSDK.SQS": {
+              "target": "Package",
+              "version": "[3.3.102.13, )"
+            },
+            "AWSSDK.SimpleNotificationService": {
+              "target": "Package",
+              "version": "[3.3.101.70, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

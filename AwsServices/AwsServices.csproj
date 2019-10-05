@@ -1,0 +1,21 @@
+    <Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.101.69" />
+      <PackageReference Include="AWSSDK.S3" Version="3.3.104.33" />
+      <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.101.70" />
+      <PackageReference Include="AWSSDK.SQS" Version="3.3.102.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="FileToUpload.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

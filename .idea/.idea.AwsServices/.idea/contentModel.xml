@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_AwsServices.808107335.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="AwsServices" t="IncludeRecursive">
+        <e p="AwsServices.csproj" t="IncludeRecursive" />
+        <e p="DynamoDb.cs" t="Include" />
+        <e p="FileToUpload.txt" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="S3.cs" t="Include" />
+        <e p="Sns.cs" t="Include" />
+        <e p="SnsSqs.cs" t="Include" />
+        <e p="Sqs.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="docker-compose.yml" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="AwsServices.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="AwsServices.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

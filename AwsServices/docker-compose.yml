@@ -1,0 +1,18 @@
+version: '2.1'
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4567-4584:4567-4584"
+      - "9090:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "localstack:/tmp/localstack"
+    environment:
+      - SERVICES=dynamodb,sns,sqs,s3
+      - DEBUG=true
+      - DATA_DIR=/tmp/localstack
+      - PORT_WEB_UI=9090
+      - DOCKER_HOST=unix:///var/run/docker.sock
+volumes:
+  localstack:
