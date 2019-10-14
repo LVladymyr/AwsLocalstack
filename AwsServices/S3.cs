@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -23,34 +24,34 @@ namespace AwsServices
             s3Client = new AmazonS3Client(clientConfig);
         }
 
-        public void Run()
+        public async Task Run()
         {
             Configure();
-            CrateBucket();
-            UploadFile();
-            BucketLs();
-            DownloadFile();
-            DeleteBucket();
+            await CrateBucket();
+            await UploadFile();
+            await BucketLs();
+            await DownloadFile();
+            await DeleteBucket();
         }
 
-        private void BucketLs()
+        private async Task BucketLs()
         {
-            var result = s3Client.ListObjectsAsync(BucketName).GetAwaiter().GetResult();
+            var result = await s3Client.ListObjectsAsync(BucketName);
             foreach (var s3Object in result.S3Objects)
             {
                 Console.WriteLine(s3Object.Key);
             }
         }
 
-        private void DeleteBucket()
+        private async Task DeleteBucket()
         {
-            s3Client.DeleteObjectAsync(BucketName, FileName).GetAwaiter().GetResult();
-            s3Client.DeleteBucketAsync(BucketName).GetAwaiter().GetResult();
+            await s3Client.DeleteObjectAsync(BucketName, FileName);
+            await s3Client.DeleteBucketAsync(BucketName);
         }
 
-        private void DownloadFile()
+        private async Task DownloadFile()
         {
-            using (GetObjectResponse response = s3Client.GetObjectAsync(BucketName, FileName).GetAwaiter().GetResult())
+            using (GetObjectResponse response = await s3Client.GetObjectAsync(BucketName, FileName))
             using (Stream responseStream = response.ResponseStream)
             using (StreamReader reader = new StreamReader(responseStream))
             {
@@ -60,7 +61,7 @@ namespace AwsServices
             }
         }
 
-        private void UploadFile()
+        private async Task UploadFile()
         {
             var putRequest = new PutObjectRequest()
             {
@@ -69,12 +70,12 @@ namespace AwsServices
                 FilePath = Path.GetFileName(FileName),
                 ContentType = "text/plain"
             };
-            s3Client.PutObjectAsync(putRequest).GetAwaiter().GetResult();
+            await s3Client.PutObjectAsync(putRequest);
         }
 
-        private void CrateBucket()
+        private async Task CrateBucket()
         {
-            s3Client.PutBucketAsync(BucketName).GetAwaiter().GetResult();
+            await s3Client.PutBucketAsync(BucketName);
         }
 
         

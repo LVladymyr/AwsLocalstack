@@ -21,19 +21,19 @@ namespace AwsServices
             snsClient = new AmazonSimpleNotificationServiceClient(clientConfig);
         }
         
-        public void Run()
+        public async Task Run()
         {
             Configure();
-            CreateTopic();
-            GetTopicList();
-            SubscribeMessage();
-            SendMessage();
-            DeleteTopic();
+            await CreateTopic();
+            await GetTopicList();
+            await SubscribeMessage();
+            await SendMessage();
+            await DeleteTopic();
         }
 
-        private void GetTopicList()
+        private async Task GetTopicList()
         {
-            var topicList = snsClient.ListTopicsAsync().GetAwaiter().GetResult();
+            var topicList = await snsClient.ListTopicsAsync();
             Console.WriteLine("Topic list:");
             foreach (var topic in topicList.Topics)
             {
@@ -41,7 +41,7 @@ namespace AwsServices
             }
         }
 
-        private void SendMessage()
+        private async Task SendMessage()
         {
             var request = new PublishRequest
             {
@@ -49,24 +49,24 @@ namespace AwsServices
                 Message = "Test Message"
             };
 
-            snsClient.PublishAsync(request).GetAwaiter().GetResult();
+            await snsClient.PublishAsync(request);
         }
 
-        private void SubscribeMessage()
+        private async Task SubscribeMessage()
         {
             var subscribeRequest = new SubscribeRequest(topicArn, "email", "yourmail@ukr.net");
-            var subscribeResponse = snsClient.SubscribeAsync(subscribeRequest).GetAwaiter().GetResult();
+            var subscribeResponse = await snsClient.SubscribeAsync(subscribeRequest);
         }
 
-        private void DeleteTopic()
+        private async Task DeleteTopic()
         {
-            snsClient.DeleteTopicAsync(topicArn).GetAwaiter().GetResult();
+            await snsClient.DeleteTopicAsync(topicArn);
         }
 
 
-        public void CreateTopic()
+        private async Task CreateTopic()
         {
-            var result = snsClient.CreateTopicAsync(new CreateTopicRequest("TopicName")).GetAwaiter().GetResult();
+            var result = await snsClient.CreateTopicAsync(new CreateTopicRequest("TopicName"));
             topicArn = result.TopicArn;
         }
 

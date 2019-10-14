@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace AwsServices
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            // new DynamoDb().Run();
-            // new SnsSqs().Run();
-            new S3().Run();
+            await new DynamoDb().Run();
+            await new SnsSqs().Run();
+            await new S3().Run();
         }
     }
 }

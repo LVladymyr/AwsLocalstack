@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Amazon;
 using Amazon.DynamoDBv2;
@@ -25,27 +26,31 @@ namespace AwsServices
             _dynamoClient = new AmazonDynamoDBClient(clientConfig);
         }
 
-        public void Run()
+        public async Task Run()
         {
             Configure();
-            CreateTable();
-            Write();
-            Read();
-            DropTable();
+            await CreateTable();
+            await PutItem();
+            await GetItem();
+            await DropTable();
         }
 
-        private void DropTable()
+        private async Task DropTable()
         {
-            _dynamoClient.DeleteTableAsync(TableName).Wait();
+            await _dynamoClient.DeleteTableAsync(TableName);
         }
 
-        private void CreateTable()
+        private async Task CreateTable()
         {
             var request = new CreateTableRequest
             {
                 TableName = TableName,
                 KeySchema = new List<KeySchemaElement> { new KeySchemaElement("Id", KeyType.HASH), },
-                AttributeDefinitions = new List<AttributeDefinition> { new AttributeDefinition("Id", ScalarAttributeType.N), },
+                AttributeDefinitions = new List<AttributeDefinition>
+                {
+                    new AttributeDefinition("Id", ScalarAttributeType.N),
+                    new AttributeDefinition("Name", ScalarAttributeType.S)
+                },
                 ProvisionedThroughput = new ProvisionedThroughput
                 {
                     ReadCapacityUnits = 10,
@@ -53,20 +58,21 @@ namespace AwsServices
                 }
             };
             
-            _dynamoClient.CreateTableAsync(request).Wait();
+            await _dynamoClient.CreateTableAsync(request);
         }
 
-        private void Read()
+        private async Task GetItem()
         {
             var request = new GetItemRequest()
             {
                 TableName = TableName,
                 Key = { { "Id", new AttributeValue() { N = "42"} } }
             };
-            _dynamoClient.GetItemAsync(request).Wait();
+            var result = await _dynamoClient.GetItemAsync(request);
+            Console.WriteLine(result.Item.Values);
         }
 
-        private void Write()
+        private async Task PutItem()
         {
             var putItemRequest = new PutItemRequest()
             {
@@ -74,13 +80,14 @@ namespace AwsServices
                 Item = 
                 {
                     {
-                        "Id", 
-                        new AttributeValue() { N = "42"}
+                        "Id", new AttributeValue() { N = "42"}
+                    },
+                    {
+                        "Name", new AttributeValue() {S = "Get Up Early"}
                     }
                 }
             };
-            
-            _dynamoClient.PutItemAsync(putItemRequest).Wait();
+            await _dynamoClient.PutItemAsync(putItemRequest);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
@@ -34,47 +35,47 @@ namespace AwsServices
             sqsClient = new AmazonSQSClient(sqsConfig);
         }
 
-        public void Run()
+        public async Task Run()
         {
             Configure();
-            CreateTopic();
-            CreateQueue();
-            SubscribeQueueToTopic();
-            SendMessage();
-            ReceiveMessage();
-            DeleteTopic();
-            DeleteQueue();
+            await CreateTopic();
+            await CreateQueue();
+            await SubscribeQueueToTopic();
+            await SendMessage();
+            await ReceiveMessage();
+            await DeleteTopic();
+            await DeleteQueue();
         }
 
-        private void CreateQueue()
+        private async Task CreateQueue()
         {
-            var result = sqsClient.CreateQueueAsync("MyQueue").GetAwaiter().GetResult();
+            var result = await sqsClient.CreateQueueAsync("MyQueue");
             queueUrl = result.QueueUrl;
         }
 
-        private void CreateTopic()
+        private async Task CreateTopic()
         {
-            var result = snsClient.CreateTopicAsync(new CreateTopicRequest("TopicName")).GetAwaiter().GetResult();
+            var result = await snsClient.CreateTopicAsync(new CreateTopicRequest("TopicName"));
             topicArn = result.TopicArn;
         }
         
-        private void SubscribeQueueToTopic()
+        private async Task SubscribeQueueToTopic()
         {
             var subscribeRequest = new SubscribeRequest(topicArn, "sqs", queueUrl);
-            snsClient.SubscribeAsync(subscribeRequest).GetAwaiter().GetResult();
+            await snsClient.SubscribeAsync(subscribeRequest);
         }
 
-        private void DeleteTopic()
+        private async Task DeleteTopic()
         {
-            snsClient.DeleteTopicAsync(topicArn).GetAwaiter().GetResult();
+            await snsClient.DeleteTopicAsync(topicArn);
         }
         
-        private void DeleteQueue()
+        private async Task DeleteQueue()
         {
-            sqsClient.DeleteQueueAsync(queueUrl).GetAwaiter().GetResult();
+            await sqsClient.DeleteQueueAsync(queueUrl);
         }
         
-        private void SendMessage()
+        private async Task SendMessage()
         {
             var request = new PublishRequest
             {
@@ -82,12 +83,12 @@ namespace AwsServices
                 Message = "Test Message"
             };
 
-            snsClient.PublishAsync(request).GetAwaiter().GetResult();
+            await snsClient.PublishAsync(request);
         }
         
-        private void ReceiveMessage()
+        private async Task ReceiveMessage()
         {
-            var result = sqsClient.ReceiveMessageAsync(queueUrl).GetAwaiter().GetResult();
+            var result = await sqsClient.ReceiveMessageAsync(queueUrl);
             foreach (var message in result.Messages)
             {
                 Console.WriteLine(message.Body);
